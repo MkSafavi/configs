@@ -1,4 +1,4 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, pkgs-yuzu, ... }: {
   imports = [
     ./base/network.nix
     ./base/utils.nix
@@ -14,6 +14,7 @@
   home.packages = with pkgs; [ 
     nvtopPackages.amd 
     obsidian
+    pkgs-yuzu.yuzu
   ];
   programs.neovim = {
     enable = true;

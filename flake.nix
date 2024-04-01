@@ -2,6 +2,8 @@
   description = "NixOS configurations";
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-unstable";
+    nixpkgs-yuzu.url =
+      "github:nixos/nixpkgs/f20a0c955555fb68cfc72886d7476de2aacd1b4e"; #https://github.com/NixOS/nixpkgs/pull/295587
     musnix = {
       url = "github:musnix/musnix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -12,7 +14,7 @@
     };
   };
 
-  outputs = inputs@{ nixpkgs, home-manager, musnix, ... }:
+  outputs = inputs@{ nixpkgs, nixpkgs-yuzu, home-manager, musnix, ... }:
     let
       system = "x86_64-linux";
       mkMachine = machineModules:
@@ -20,6 +22,10 @@
           inherit system;
           specialArgs = {
             inherit nixpkgs;
+            pkgs-yuzu = import nixpkgs-yuzu {
+              inherit system;
+              config.allowUnfree = true;
+            };
           };
           modules = [
             system/configuration.nix
